@@ -10,4 +10,5 @@ format:
       - text: \usepackage{siunitx}
 ---
 
-This filter is able to handle the num command from siunitx \num{123456789}.
+This filter is able to handle the num command from siunitx (with random spaces) \num{ 123 45678 9   }.
+Handling the qty command is on its way, such as \qty{3}{\milli\meter}
