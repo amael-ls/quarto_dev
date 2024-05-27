@@ -142,7 +142,21 @@ local function Format_units(s)
   -- 2. Manage power
   -- 4. Manage the dot and slash
 
-  print("Final = " .. unit)
+  -- Adding space except for Celsius, degrees, angles, and percent
+  local function helper(unit)
+    exceptions = {"\194\176C", "\202\185", "\202\186", "\194\176", "%%"}
+    for _, u in ipairs(exceptions) do
+      if unit == u then
+        return unit
+      end
+    end
+    return "&nbsp;" .. unit
+  end
+
+  if (not no_num) then -- i.e., there is a num
+    unit = helper(unit)
+  end
+
   if no_num then
     return pandoc.RawInline("html", unit)
   else
