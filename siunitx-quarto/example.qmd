@@ -1,5 +1,5 @@
 ---
-title: "Siunitx-quarto Example"
+title: "Example"
 filters:
   - siunitx-quarto
 format:
@@ -7,8 +7,11 @@ format:
     toc: true
   pdf:
     include-in-header:
-      - text: \usepackage{siunitx}
+      - text: |
+          \usepackage{siunitx}
 ---
 
-This filter is able to handle the num command from siunitx (with random spaces) \num{ 123 45678 9   }.
-Handling the qty command is on its way, such as \qty{3}{\milli\meter}
+This filter is able to handle some command from the siunitx package, such as:
+
+1. num (with random spaces) \num{ 123 45678 9   }
+2. The qty command without power or per, such as \qty{3}{\micro\meter}, \qty{28}{\degreeCelsius}. My resistance to \qty{72}{\percent} dark chocolate is \qty{23}{\nano\ohm}
