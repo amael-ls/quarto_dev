@@ -65,10 +65,59 @@ local function Format_units(s)
   unit = string.gsub(unit, "\\quetta", "Q")  -- 30
 
   -- Units
-  -- ... Distance
-  unit = string.gsub(unit, "\\metre", "m")
-  unit = string.gsub(unit, "\\meter", "m") -- metre is the SI recognised spelling, but US english uses meter
+  -- ... SI units
+  unit = string.gsub(unit, "\\kilogram", "kg")
+  unit = string.gsub(unit, "\\metre",    "m")
+  unit = string.gsub(unit, "\\meter",    "m") -- metre is the SI recognised spelling, but US english uses meter
+  unit = string.gsub(unit, "\\mole",     "mol")
+  unit = string.gsub(unit, "\\second",   "s")
+  unit = string.gsub(unit, "\\ampere",   "A")
+  unit = string.gsub(unit, "\\kelvin",   "K")
+  unit = string.gsub(unit, "\\candela",  "cd")
 
+  unit = string.gsub(unit, "\\gram", "g") -- Technically non SI, but put here in case of \kilo\gram instead of \kilogram
+
+  -- ... Derived units, by alphabetical order
+  unit = string.gsub(unit, "\\becquerel", "Bq")
+  unit = string.gsub(unit, "\\degreeCelsius", "\194\176C")
+  unit = string.gsub(unit, "\\coulomb",   "C")
+  unit = string.gsub(unit, "\\farad",     "F")
+  unit = string.gsub(unit, "\\gray",      "Gy")
+  unit = string.gsub(unit, "\\hertz",     "Hz")
+  unit = string.gsub(unit, "\\henry",     "H")
+  unit = string.gsub(unit, "\\joule",     "J")
+  unit = string.gsub(unit, "\\katal",     "kat")
+  unit = string.gsub(unit, "\\lumen",     "lm")
+  unit = string.gsub(unit, "\\lux",       "lx")
+
+  unit = string.gsub(unit, "\\newton",    "N")
+  unit = string.gsub(unit, "\\ohm",       "\226\132\166")
+  unit = string.gsub(unit, "\\pascal",    "Pa")
+  unit = string.gsub(unit, "\\radian",    "rad")
+  unit = string.gsub(unit, "\\siemens",   "S")
+  unit = string.gsub(unit, "\\sievert",   "Sv")
+  unit = string.gsub(unit, "\\steradian", "sr")
+  unit = string.gsub(unit, "\\tesla",     "T")
+  unit = string.gsub(unit, "\\volt",      "V")
+  unit = string.gsub(unit, "\\watt",      "W")
+  unit = string.gsub(unit, "\\weber",     "Wb")
+
+  -- ... Non SI units accepted for use with the International System of Units.
+  unit = string.gsub(unit, "\\astronomicalunit", "au")
+  unit = string.gsub(unit, "\\bel",              "B")
+  unit = string.gsub(unit, "\\decibel",          "dB")
+  unit = string.gsub(unit, "\\dalton",           "Da")
+  unit = string.gsub(unit, "\\day",              "d")
+  unit = string.gsub(unit, "\\electronvolt",     "eV")
+  unit = string.gsub(unit, "\\hectare",          "ha")
+  unit = string.gsub(unit, "\\hour",             "h")
+  unit = string.gsub(unit, "\\litre",            "L")
+  unit = string.gsub(unit, "\\liter",            "L")
+  unit = string.gsub(unit, "\\minute",           "min")
+  unit = string.gsub(unit, "\\neper",            "Np")
+  unit = string.gsub(unit, "\\tonne",            "t")
+
+  --! TO DO: Sometimes a space will be required between the number and its units, sometimes not!
   return num .. unit
 end
 
