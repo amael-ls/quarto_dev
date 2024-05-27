@@ -12,7 +12,7 @@ quarto add amael-ls/quarto_dev/siunitx-quarto
 This will install the extension under the `_extensions` subdirectory.
 
 ## Usage
-Just type the siunitx commands in Quarto as you would do in Latex (check the MWE: [example](example.qmd)). Nothing else to do except having the proper YAML header:
+Just type the siunitx commands in Quarto as you would do in Latex (check the [MWE](example.qmd)). Nothing else to do except having a proper YAML header, such as:
 ```yaml
 ---
 filters:
@@ -33,5 +33,5 @@ Here is the source code for a minimal example: [example.qmd](example.qmd).
 
 ## Issues and contributing
 
-Issues, forking, pull requests are all welcome!
+Issues, forking, and pull requests are all welcome!
 
