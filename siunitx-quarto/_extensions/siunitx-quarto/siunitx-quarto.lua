@@ -117,6 +117,14 @@ local function Format_units(s)
   unit = string.gsub(unit, "\\neper",            "Np")
   unit = string.gsub(unit, "\\tonne",            "t")
 
+  -- ... Arc units
+  unit = string.gsub(unit, "\\arcminute", "\202\185")
+  unit = string.gsub(unit, "\\arcsecond", "\202\186")
+  unit = string.gsub(unit, "\\degree", "\194\176")
+  
+  -- ... Percent
+  unit = string.gsub(unit, "\\percent", "%")
+
   --! TO DO: Sometimes a space will be required between the number and its units, sometimes not!
   return num .. unit
 end
@@ -130,7 +138,7 @@ RawInline = function(element)
       return pandoc.Str(Format_num(Extract_content(element.text, "num")[1], " "))
     end
 
-  --   -- Handling the \qty{}{} command, the same should apply to \SI and \si commands although outdated
+  -- Handling the \qty{}{} command, the same should apply to \SI and \si commands although outdated
     pos, _ = string.find(element.text, "\\qty{")
     if pos ~= nil then
       return pandoc.Str(Format_units(Extract_content(element.text, "qty")))
