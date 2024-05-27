@@ -11,7 +11,8 @@ format:
           \usepackage{siunitx}
 ---
 
-This filter is able to handle some command from the siunitx package, such as:
+This filter is able to handle some commands from the siunitx package, such as:
 
 1. num (with random spaces) \num{ 123 45678 9   }
-2. The qty command without power or per, such as \qty{3}{\micro\meter}, \qty{28}{\degreeCelsius}. My resistance to \qty{72}{\percent} dark chocolate is \qty{23}{\nano\ohm}
+2. qty, so far without power or per, such as \qty{3}{\micro\meter}, \qty{28}{\degreeCelsius}. My resistance to \qty{72}{\percent} dark chocolate is \qty{23}{\nano\ohm}
+3. unit, \unit{\joule \per \kilogram \second}
