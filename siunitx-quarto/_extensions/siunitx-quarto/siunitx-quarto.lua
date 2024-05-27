@@ -28,11 +28,33 @@ end
 
 -- Format units
 local function Format_units(s)
-  num = s[1]
-  unit = s[2]
+  no_num = false
+  if #s > 1 then
+    num = Format_num(s[1], " ")
+    unit = s[2]
+  elseif #s == 1 then
+    unit = s[1]
+    no_num = true
+  else
+    num = nil
+    unit = ""
+    no_num = true
+  end
 
   -- Check the format of num
   -- ! TO DO: If num contains something like 10^{x} then I need to treat it
+  
+  -- SI units, to handle before the metric suffixes, otherwise \\kilogram will bug, it will become kgram (kilo becomes k)
+  unit = string.gsub(unit, "\\kilogram", "kg")
+  unit = string.gsub(unit, "\\metre",    "m")
+  unit = string.gsub(unit, "\\meter",    "m") -- metre is the SI recognised spelling, but US english uses meter
+  unit = string.gsub(unit, "\\mole",     "mol")
+  unit = string.gsub(unit, "\\second",   "s")
+  unit = string.gsub(unit, "\\ampere",   "A")
+  unit = string.gsub(unit, "\\kelvin",   "K")
+  unit = string.gsub(unit, "\\candela",  "cd")
+
+  unit = string.gsub(unit, "\\gram", "g") -- Technically non SI, but put here in case of \kilo\gram instead of \kilogram
   
   -- metric prefixes
   -- ... Small first (negative power of 10)
@@ -65,18 +87,6 @@ local function Format_units(s)
   unit = string.gsub(unit, "\\quetta", "Q")  -- 30
 
   -- Units
-  -- ... SI units
-  unit = string.gsub(unit, "\\kilogram", "kg")
-  unit = string.gsub(unit, "\\metre",    "m")
-  unit = string.gsub(unit, "\\meter",    "m") -- metre is the SI recognised spelling, but US english uses meter
-  unit = string.gsub(unit, "\\mole",     "mol")
-  unit = string.gsub(unit, "\\second",   "s")
-  unit = string.gsub(unit, "\\ampere",   "A")
-  unit = string.gsub(unit, "\\kelvin",   "K")
-  unit = string.gsub(unit, "\\candela",  "cd")
-
-  unit = string.gsub(unit, "\\gram", "g") -- Technically non SI, but put here in case of \kilo\gram instead of \kilogram
-
   -- ... Derived units, by alphabetical order
   unit = string.gsub(unit, "\\becquerel", "Bq")
   unit = string.gsub(unit, "\\degreeCelsius", "\194\176C")
@@ -131,8 +141,14 @@ local function Format_units(s)
   -- 3. Manage the \per command that put a power minus sign to the next unit
   -- 4. Manage the dot and slash
 
-  --! TO DO: Sometimes a space will be required between the number and its units, sometimes not!
-  return num .. unit
+  
+  -- unit = string.gsub(unit, "\\per%{(.-)%}%{(.-)%}", "%1/%2")
+  
+  if no_num then
+    return unit
+  else
+    return num .. unit
+  end
 end
 
 -- Filter to modify the output 
@@ -142,6 +158,12 @@ RawInline = function(element)
     pos, _ = string.find(element.text, "\\num{")
     if pos ~= nil then
       return pandoc.Str(Format_num(Extract_content(element.text, "num")[1], " "))
+    end
+
+    -- Handling the \unit{} command
+    pos, _ = string.find(element.text, "\\unit{")
+    if pos ~= nil then
+      return pandoc.Str(Format_units(Extract_content(element.text, "unit")))
     end
 
   -- Handling the \qty{}{} command, the same should apply to \SI and \si commands although outdated
