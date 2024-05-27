@@ -43,7 +43,9 @@ local function Format_units(s)
 
   -- Check the format of num
   -- ! TO DO: If num contains something like 10^{x} then I need to treat it
-  
+  -- Handle the \per command. Note that there is no problem with \percent or any other command starting by \per...
+  unit = string.gsub(unit, "\\per(\\%a+)", "%1<sup>-1</sup>")
+
   -- SI units, to handle before the metric suffixes, otherwise \\kilogram will bug, it will become kgram (kilo becomes k)
   unit = string.gsub(unit, "\\kilogram", "kg")
   unit = string.gsub(unit, "\\metre",    "m")
@@ -138,16 +140,13 @@ local function Format_units(s)
   --! TO DO LIST:
   -- 1. Manage the spacing
   -- 2. Manage power
-  -- 3. Manage the \per command that put a power minus sign to the next unit
   -- 4. Manage the dot and slash
 
-  
-  -- unit = string.gsub(unit, "\\per%{(.-)%}%{(.-)%}", "%1/%2")
-  
+  print("Final = " .. unit)
   if no_num then
-    return unit
+    return pandoc.RawInline("html", unit)
   else
-    return num .. unit
+    return pandoc.RawInline("html", num .. unit)
   end
 end
 
@@ -163,13 +162,13 @@ RawInline = function(element)
     -- Handling the \unit{} command
     pos, _ = string.find(element.text, "\\unit{")
     if pos ~= nil then
-      return pandoc.Str(Format_units(Extract_content(element.text, "unit")))
+      return Format_units(Extract_content(element.text, "unit"))
     end
 
   -- Handling the \qty{}{} command, the same should apply to \SI and \si commands although outdated
     pos, _ = string.find(element.text, "\\qty{")
     if pos ~= nil then
-      return pandoc.Str(Format_units(Extract_content(element.text, "qty")))
+      return Format_units(Extract_content(element.text, "qty"))
     end
   end
   return element
