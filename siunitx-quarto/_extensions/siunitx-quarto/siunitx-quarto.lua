@@ -28,8 +28,48 @@ end
 
 -- Format units
 local function Format_units(s)
-  print("print from Format_units = " .. s)
-  return "lala"
+  num = s[1]
+  unit = s[2]
+
+  -- Check the format of num
+  -- ! TO DO: If num contains something like 10^{x} then I need to treat it
+  
+  -- metric prefixes
+  -- ... Small first (negative power of 10)
+  unit = string.gsub(unit, "\\quecto", "q")        -- -30
+  unit = string.gsub(unit, "\\ronto",  "r")        -- -27
+  unit = string.gsub(unit, "\\yocto",  "y")        -- -24
+  unit = string.gsub(unit, "\\zepto",  "z")        -- -21
+  unit = string.gsub(unit, "\\atto",   "a")        -- -18
+  unit = string.gsub(unit, "\\femto",  "f")        -- -15
+  unit = string.gsub(unit, "\\pico",   "p")        -- -12
+  unit = string.gsub(unit, "\\nano",   "n")        --  -9
+  unit = string.gsub(unit, "\\micro",  "\194\181") --  -6
+  unit = string.gsub(unit, "\\milli",  "m")        --  -3
+  unit = string.gsub(unit, "\\centi",  "c")        --  -2
+  unit = string.gsub(unit, "\\deci",   "d")        --  -1
+
+  -- ... Large second (positive power of 10)
+  unit = string.gsub(unit, "\\deca",   "da") -- 1
+  unit = string.gsub(unit, "\\deka",   "da") -- 1
+  unit = string.gsub(unit, "\\hecto",  "h")  -- 2
+  unit = string.gsub(unit, "\\kilo",   "k")  -- 3
+  unit = string.gsub(unit, "\\mega",   "M")  -- 6
+  unit = string.gsub(unit, "\\giga",   "G")  -- 9
+  unit = string.gsub(unit, "\\tera",   "T")  -- 12
+  unit = string.gsub(unit, "\\peta",   "P")  -- 15
+  unit = string.gsub(unit, "\\exa",    "E")  -- 18
+  unit = string.gsub(unit, "\\zetta",  "Z")  -- 21
+  unit = string.gsub(unit, "\\yotta",  "Y")  -- 24
+  unit = string.gsub(unit, "\\ronna",  "R")  -- 27
+  unit = string.gsub(unit, "\\quetta", "Q")  -- 30
+
+  -- Units
+  -- ... Distance
+  unit = string.gsub(unit, "\\metre", "m")
+  unit = string.gsub(unit, "\\meter", "m") -- metre is the SI recognised spelling, but US english uses meter
+
+  return num .. unit
 end
 
 -- Filter to modify the output 
@@ -44,7 +84,7 @@ RawInline = function(element)
   --   -- Handling the \qty{}{} command, the same should apply to \SI and \si commands although outdated
     pos, _ = string.find(element.text, "\\qty{")
     if pos ~= nil then
-      return pandoc.Str(Format_units(Extract_content(element.text, "qty")[1])) -- ! RESTART HERE. pandoc.Para ???
+      return pandoc.Str(Format_units(Extract_content(element.text, "qty")))
     end
   end
   return element
