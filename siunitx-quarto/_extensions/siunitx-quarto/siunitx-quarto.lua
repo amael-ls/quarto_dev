@@ -123,7 +123,13 @@ local function Format_units(s)
   unit = string.gsub(unit, "\\degree", "\194\176")
   
   -- ... Percent
-  unit = string.gsub(unit, "\\percent", "%")
+  unit = string.gsub(unit, "\\percent", "%%") -- This sign must be escaped with a second percent in Lua
+
+  --! TO DO LIST:
+  -- 1. Manage the spacing
+  -- 2. Manage power
+  -- 3. Manage the \per command that put a power minus sign to the next unit
+  -- 4. Manage the dot and slash
 
   --! TO DO: Sometimes a space will be required between the number and its units, sometimes not!
   return num .. unit
