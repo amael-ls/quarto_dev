@@ -1,23 +1,37 @@
-# Siunitx-quarto Extension For Quarto
+# Siunitx-quarto - Lua filter For Quarto
 
-_TODO_: Add a short description of your extension.
+## Overview
+This is a Quarto extension that handles the commands from the package [siunitx](https://ctan.org/pkg/siunitx?lang=en) developed by [Joseph Wright](https://github.com/josephwright). It has been written with two outputs in mind: `html` and `latex/pdf`.
 
-## Installing
+## Install
 
-_TODO_: Replace the `<github-organization>` with your GitHub organization.
-
+To install this extension in your current directory (or into the Quarto project that you're currently working in), use the following command:
 ```bash
-quarto add <github-organization>/siunitx-quarto
+quarto add amael-ls/quarto_dev/siunitx-quarto
 ```
-
 This will install the extension under the `_extensions` subdirectory.
-If you're using version control, you will want to check in this directory.
 
-## Using
-
-_TODO_: Describe how to use your extension.
+## Usage
+Just type the siunitx commands in Quarto as you would do in Latex (check the MWE: [example](example.qmd)). Nothing else to do except having the proper YAML header:
+```yaml
+---
+filters:
+  - siunitx-quarto
+format:
+  html:
+    toc: true
+  pdf:
+    include-in-header:
+      - text: |
+          \usepackage{siunitx}
+---
+```
 
 ## Example
 
 Here is the source code for a minimal example: [example.qmd](example.qmd).
+
+## Issues and contributing
+
+Issues, forking, pull requests are all welcome!
 
