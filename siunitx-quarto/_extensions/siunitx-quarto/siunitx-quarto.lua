@@ -63,6 +63,7 @@ local function Format_units(s)
   unit = string.gsub(unit, "\\squared(\\%a+)", "%1<sup>2</sup>")
   unit = string.gsub(unit, "\\cubic(\\%a+)", "%1<sup>3</sup>")
   unit = string.gsub(unit, "\\cubed(\\%a+)", "%1<sup>3</sup>")
+  unit = string.gsub(unit, "%^%{?(-?%d+)%}?", "<sup>%1</sup>")
 
   -- SI units, to handle before the metric suffixes, otherwise \\kilogram will bug, it will become kgram (kilo becomes k)
   unit = string.gsub(unit, "\\kilogram", "kg")
