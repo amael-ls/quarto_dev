@@ -44,7 +44,17 @@ local function Format_units(s)
   -- Check the format of num
   -- ! TO DO: If num contains something like 10^{x} then I need to treat it
   -- Handle the \per command. Note that there is no problem with \percent or any other command starting by \per...
+  unit = string.gsub(unit, "\\per\\square(\\%a+)", "%1<sup>-2</sup>")
+  unit = string.gsub(unit, "\\per\\squared(\\%a+)", "%1<sup>-2</sup>")
+  unit = string.gsub(unit, "\\per\\cubic(\\%a+)", "%1<sup>-3</sup>")
+  unit = string.gsub(unit, "\\per\\cubed(\\%a+)", "%1<sup>-3</sup>")
   unit = string.gsub(unit, "\\per(\\%a+)", "%1<sup>-1</sup>")
+
+  -- Handle power
+  unit = string.gsub(unit, "\\square(\\%a+)", "%1<sup>2</sup>")
+  unit = string.gsub(unit, "\\squared(\\%a+)", "%1<sup>2</sup>")
+  unit = string.gsub(unit, "\\cubic(\\%a+)", "%1<sup>3</sup>")
+  unit = string.gsub(unit, "\\cubed(\\%a+)", "%1<sup>3</sup>")
 
   -- SI units, to handle before the metric suffixes, otherwise \\kilogram will bug, it will become kgram (kilo becomes k)
   unit = string.gsub(unit, "\\kilogram", "kg")
