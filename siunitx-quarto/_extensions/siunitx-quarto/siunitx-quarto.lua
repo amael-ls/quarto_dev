@@ -5,10 +5,18 @@ local function Extract_content(s, command)
   _, loc_start = string.find(s, "\\" .. command .. "{")
 
   content_cmd = {}
-  while (loc_start ~= nil) do
-    _, loc_end = string.find(s, "}", loc_start + 1)
+  while (loc_start ~= nil) do -- While I find the command in the string
+    _, loc_other_br = string.find(s, "{", loc_start + 1) -- Check whether there are other opening braces
+    _, loc_end = string.find(s, "}", loc_start + 1) -- Check the next closing bracket
+
+    -- Is the closing bracket after the next opening? If yes, then it is not the corresponding bracket to \command{...}
+    while (loc_other_br and loc_other_br < loc_end) do
+      _, loc_other_br = string.find(s, "{", loc_other_br + 1) -- Check whether there are other opening braces
+      _, loc_end = string.find(s, "}", loc_end + 1) -- Check the next closing bracket
+    end
+
     content_cmd[#content_cmd + 1] = string.sub(s, loc_start + 1, loc_end - 1) -- append
-    _, loc_start = string.find(s, "{", loc_end + 1)
+    _, loc_start = string.find(s, "\\" .. command .. "{", loc_end + 1) -- Look for the next \command{ after end previous cmd
   end
 
   return content_cmd
